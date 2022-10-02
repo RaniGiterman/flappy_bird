@@ -1,6 +1,7 @@
 const APP_WIDTH = window.innerWidth;
 const APP_HEIGHT = window.innerHeight;
-const G = 2.5;
+const G = 0.015;
+const SPEED_ADDER = 0.08
 let bird_should_jump = false;
 let wall_arr = [];
 let stopAnimation = false;
@@ -21,6 +22,8 @@ bird.tint = 0xff1b0a;
 bird.x = bird.width;
 bird.y = APP_HEIGHT - bird.height;
 bird.speed = 0;
+
+let bird_base_y = APP_HEIGHT - bird.height;
 
 app.stage.addChild(bird);
 
@@ -52,7 +55,7 @@ text.y = 20;
 
 let game_interval = setInterval(() => {
   game();
-}, 4);
+}, 1);
 
 window.addEventListener("keyup", (e) => {
   if (e.key == " ") {
@@ -68,32 +71,41 @@ function game() {
   }
 
   check_if_should_generate_new_wall();
-  // move_wall();
+  move_wall();
   check_bird_hit_wall();
 
-  console.log(bird.y, bird.speed);
-  // console.log(bird.y, APP_HEIGHT - bird.height);
-  if (bird.y <= APP_HEIGHT - bird.height) {
-    bird.y += bird.speed;
+
+  if (bird.y <= bird_base_y) {
+    if (bird.y + bird.speed > bird_base_y)
+      bird.y = bird_base_y
+    else
+      bird.y += bird.speed;
   }
 
-  if (bird.y != APP_HEIGHT - bird.height) bird.speed += G;
+  if (bird.y < APP_HEIGHT - bird.height) {
+    bird.speed += G;
+  } else {
+    bird.speed = 0
+  }
 }
 
 generate_wall();
 
+let x
 function bird_jump() {
   let count = 0;
   leave_trails();
-  let x = setInterval(() => {
-    if (count > 5 || bird.y <= 0 || stopAnimation) return clearInterval(x);
-    bird.speed -= 5;
-    // console.log(bird.speed);
-    // if (count <= 40) bird.speed -= 3;
-    // else if (count <= 50) bird.speed -= 2;
-    // else bird.speed--;
+
+  if (x) {
+    bird.speed = 0
+    clearInterval(x)
+  }
+
+  x = setInterval(() => {
+    if (count > 15 || bird.y <= 0 || stopAnimation) return clearInterval(x);
+    bird.speed -= SPEED_ADDER;
     count++;
-  }, 4);
+  }, 1);
 }
 
 function leave_trails() {
