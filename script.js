@@ -152,7 +152,7 @@ function generate_wall() {
   wall_up.y = 0;
   app.stage.addChild(wall_up);
 
-  let wall_down = new PIXI.Sprite.from(PIXI.Texture.WHITE);
+  let wall_down = new PIXI.Sprite(PIXI.Texture.WHITE);
   wall_down.width = 30;
   wall_down.height = APP_HEIGHT;
   wall_down.tint = 0xffffff;
