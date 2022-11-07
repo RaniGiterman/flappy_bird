@@ -15,7 +15,7 @@ let app = new PIXI.Application({
 
 document.getElementById("game").appendChild(app.view);
 
-let bird = new PIXI.Sprite.from(PIXI.Texture.WHITE);
+let bird = new PIXI.Sprite(PIXI.Texture.WHITE);
 bird.width = 40;
 bird.height = 40;
 bird.tint = 0xff1b0a;
@@ -110,7 +110,7 @@ function bird_jump() {
 
 function leave_trails() {
   for (let i = bird.x; i < bird.x + bird.width; i += 5) {
-    let trail = new PIXI.Sprite.from(PIXI.Texture.WHITE);
+    let trail = new PIXI.Sprite(PIXI.Texture.WHITE);
     trail.width = 1;
     trail.height = 30;
     trail.tint = 0xff1b0a;
@@ -143,7 +143,7 @@ function generate_wall() {
 
   let y = Math.floor(Math.random() * (APP_HEIGHT - 0 + 1)) + 0;
 
-  let wall_up = new PIXI.Sprite.from(PIXI.Texture.WHITE);
+  let wall_up = new PIXI.Sprite(PIXI.Texture.WHITE);
   wall_up.width = 30;
   if (y - 100 < 0) wall_up.height = 0;
   else wall_up.height = y - 100;
